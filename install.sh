@@ -65,6 +65,15 @@ for file in scripts/*.sh; do
     echo "$name | $raw_url" >> "$FILES_TXT"
     echo "✔ $name → $raw_url"
 done
+echo
+echo "🧾 Добавляю .desktop файлы..."
+
+for file in *.desktop; do
+    name=$(basename "$file")
+    raw_url="https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/$BRANCH/$name"
+    echo "$name | $raw_url" >> "$FILES_TXT"
+    echo "✔ $name → $raw_url"
+done
 
 echo
 echo "✔ files.txt создан: $FILES_TXT"
