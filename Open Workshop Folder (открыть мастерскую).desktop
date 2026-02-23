@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Open Workshop Folder
+Comment=Open my-workshop directory
+Exec=thunar /home/minok/my-workshop
+Icon=folder
+Path=/home/minok/my-workshop
+Terminal=false
+StartupNotify=false

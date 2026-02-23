@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Диагностика
+Comment=Run workshop diagnostics
+Exec=xfce4-terminal --hold -x bash -c "./scripts/diagnostics.sh"
+Icon=utilities-terminal
+Path=/home/minok/my-workshop
+Terminal=false
+StartupNotify=false

@@ -1,0 +1,27 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Diagnostics
+Comment=Run workshop diagnostics
+Exec=xfce4-terminal --hold -e "./scripts/diagnostics.sh"
+Icon=view-fullscreen
+Path=/home/minok/my-workshop
+Terminal=false
+StartupNotify=false
+
+#========================================================
+#[Desktop Entry]
+#Version=1.0
+#Type=Application
+#Name=diagnostics.sh
+#Comment=
+#Exec=xfce4-terminal --hold -e "./scripts/diagnostics.sh"
+#Exec=xfce4-terminal --hold -x bash -c "./scripts/diagnostics.sh"
+
+#Icon=view-fullscreen
+#Path=
+#Terminal=true
+#StartupNotify=false
+
+
+
