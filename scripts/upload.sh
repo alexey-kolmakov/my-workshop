@@ -1,17 +1,28 @@
 #!/bin/bash
-# upload.sh — загрузка обновлённых модулей на GitHub
 
-echo "⬆ Загрузка изменений на GitHub..."
-echo
+# Папка мастерской-исходников
+SRC="$HOME/my-workshop"
 
-git add scripts/*.sh files.txt
-git status
+# Выбираем файл через графику
+FILE=$(zenity --file-selection --title="Выберите файл для загрузки на GitHub")
 
-echo
-read -p "Введите сообщение коммита: " msg
+if [[ -z "$FILE" ]]; then
+    zenity --warning --text="Файл не выбран"
+    exit 1
+fi
 
-git commit -m "$msg"
+# Копируем файл в scripts/
+cp "$FILE" "$SRC/scripts/"
+BASENAME=$(basename "$FILE")
+
+# Делаем исполняемым
+chmod +x "$SRC/scripts/$BASENAME"
+
+cd "$SRC"
+
+# Добавляем в Git
+git add "scripts/$BASENAME"
+git commit -m "Добавлен модуль $BASENAME"
 git push
 
-echo
-echo "✅ Загрузка завершена!"
+zenity --info --text="Файл $BASENAME загружен на GitHub!"
