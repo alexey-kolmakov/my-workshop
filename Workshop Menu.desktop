@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Workshop Menu
-Comment=Открыть меню мастерской
-Exec=gnome-terminal -- bash -c "$HOME/workshop/scripts/menu.sh"
-Icon=utilities-terminal
-Terminal=false
-Categories=Utility;
