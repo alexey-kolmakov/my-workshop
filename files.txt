@@ -6,6 +6,7 @@ copy_of_section_home.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-wor
 create-wine-shortcut.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/create-wine-shortcut.sh
 Creating_Wine_shortcut.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/Creating_Wine_shortcut.sh
 diagnostics.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/diagnostics.sh
+downloader.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/downloader.sh
 enable_fontsmoothing.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/enable_fontsmoothing.sh
 fix-permissions.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/fix-permissions.sh
 hash.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/hash.sh
