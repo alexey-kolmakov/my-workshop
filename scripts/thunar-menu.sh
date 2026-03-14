@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bash-меню для ПКМ Thunar — адаптивне, з логами, звуком і відкриттям документів, працює тільки в меню ПКМ Thunar
+# Bash-меню для ПКМ Thunar — адаптивне, з логами, звуком і відкриттям документів
 source ~/SCRIPTS/actions/create_symlink.sh
 
 # === Функція відкриття документів через MS Office (Wine) ===
@@ -10,13 +10,13 @@ open_office_file() {
 
   case "$EXT" in
     docx|rtf)
-      EXE_PATH="$WINEPREFIX/drive_c/Program Files (x86)/Microsoft Office/Office12/WINWORD.EXE"
+      EXE_PATH="$WINEPREFIX/drive_c/Program Files/Microsoft Office/Office12/WINWORD.EXE"
       ;;
     doc|rtf)
-      EXE_PATH="$WINEPREFIX/drive_c/Program Files (x86)/Microsoft Office/Office12/WINWORD.EXE"
+      EXE_PATH="$WINEPREFIX/drive_c/Program Files/Microsoft Office/Office12/WINWORD.EXE"
       ;;
     xls|xlsx)
-      EXE_PATH="$WINEPREFIX/drive_c/Program Files (x86)/Microsoft Office/Office12/EXCEL.EXE"
+      EXE_PATH="$WINEPREFIX/drive_c/Program Files/Microsoft Office/Office12/EXCEL.EXE"
       ;;
     *)
       notify-send "Невідомий формат" "Файл не підтримується: .$EXT"
