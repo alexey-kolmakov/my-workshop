@@ -35,3 +35,6 @@ winebackup.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main
 wine-master-2.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/wine-master-2.sh
 wine-master.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/wine-master.sh
 wine-printer-check.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/wine-printer-check.sh
+wine-master-2.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/wine-master-2.sh
+wine-master.sh|https://raw.githubusercontent.com/alexey-kolmakov/my-workshop/main/scripts/wine-master.sh
+
