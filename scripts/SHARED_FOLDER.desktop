@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SHARED_FOLDER
+Exec=xdg-open "/home/minok/SHARED_FOLDER"
+Icon=Жесткий_диск_синий
+Terminal=false
+Path=/home/minok
+StartupNotify=true
+Categories=Office;
