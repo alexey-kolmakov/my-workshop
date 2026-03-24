@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Починить Wi-Fi
-Comment=Выгрузка wl и настройка iwl4965
-Exec=bash -c "/home/minok/wifi_fix.sh; echo '--- Нажмите Enter, чтобы закрыть окно ---'; read"
-Icon=network-wireless
-Terminal=true
-Categories=System;
