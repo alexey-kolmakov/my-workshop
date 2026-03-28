@@ -1,0 +1,20 @@
+name: Update Files List
+
+on: [push] # Будет запускаться при любом пуше (загрузке) файлов
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate files.txt
+        run: |
+          ls *.sh | grep -v "downloader.sh" > files.txt
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add files.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update files.txt" && git push)
