@@ -1,4 +1,3 @@
-runwine.sh
 safe-eject-interactive.sh
 script_cataloger.sh
 script_manager_menu.sh
