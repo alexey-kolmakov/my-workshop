@@ -1,4 +1,3 @@
-script_manager_menu.sh
 script_safety_menu.sh
 selective_beckup_creation.sh
 setup_links.sh
