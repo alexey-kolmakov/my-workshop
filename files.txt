@@ -1,4 +1,3 @@
-creating_wine_shortcut.sh
 diagnostics.sh
 disk_ritual.sh
 doc_sorter.sh
