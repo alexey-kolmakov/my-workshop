@@ -1,4 +1,3 @@
-diagnostics.sh
 disk_ritual.sh
 doc_sorter.sh
 fix-permissions.sh
