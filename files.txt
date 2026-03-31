@@ -1,4 +1,3 @@
-mount.sh
 myscript.sh
 n-make-executable.sh
 ndd-manager.sh
