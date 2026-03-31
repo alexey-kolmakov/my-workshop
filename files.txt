@@ -1,4 +1,3 @@
-autostart-manager.sh
 check-meta-folder.sh
 clean-meta-gui.sh
 clean-system.sh
