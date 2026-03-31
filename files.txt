@@ -1,4 +1,3 @@
-partition_menu.sh
 puts_info.sh
 recover_sort_menu.sh
 recovery_menu.sh
