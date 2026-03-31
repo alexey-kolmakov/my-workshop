@@ -1,4 +1,3 @@
-clean-system.sh
 clean_empty_desktop_files.sh
 copy_of_section_home.sh
 create-wine-shortcut.sh
