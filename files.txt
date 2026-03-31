@@ -1,4 +1,3 @@
-auto-shortcut.sh
 autolabel.sh
 autostart-manager.sh
 check-meta-folder.sh
