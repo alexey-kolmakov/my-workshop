@@ -1,4 +1,3 @@
-n-make-executable.sh
 ndd-manager.sh
 ndd-toggle.sh
 ocr_pdf.sh
