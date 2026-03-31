@@ -1,4 +1,3 @@
-ocr_pdf.sh
 ocr_pdf_thunar.sh
 partition_menu.sh
 puts_info.sh
