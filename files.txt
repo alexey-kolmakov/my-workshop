@@ -1,4 +1,3 @@
-doc_sorter.sh
 fix-permissions.sh
 hash.sh
 install-ms_office.sh
