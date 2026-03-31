@@ -1,4 +1,3 @@
-script_cataloger.sh
 script_manager_menu.sh
 script_safety_menu.sh
 selective_backup-home.sh
