@@ -1,4 +1,3 @@
-check-meta-folder.sh
 clean-meta-gui.sh
 clean-system.sh
 clean_empty_desktop_files.sh
