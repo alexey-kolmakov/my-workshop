@@ -51,6 +51,7 @@ scripts/wifi_fix.sh
 scripts/rename_interactive.sh
 scripts/create_snapshot.sh
 scripts/skript-sector-texts.sh
+scripts/smart_download.sh
 scripts/timeshift_assistant.sh
 scripts/rename_docx_by_title.sh
 scripts/wine-master.sh
