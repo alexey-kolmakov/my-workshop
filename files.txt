@@ -22,4 +22,3 @@ setup_links.sh
 shortcut-builder.sh
 shortcut-maker.sh
 shortcut_constructor.sh
-site_diagnose.sh
