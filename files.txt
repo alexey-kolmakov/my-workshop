@@ -1,4 +1,3 @@
-rename_interactive.sh
 runwine.sh
 safe-eject-interactive.sh
 script_cataloger.sh
