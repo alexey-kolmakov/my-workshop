@@ -1,4 +1,3 @@
-recovery_menu.sh
 recovery_sorter_menu.sh
 rename_docx_by_title.sh
 rename_interactive.sh
