@@ -1,4 +1,3 @@
-create_web_shortcut.sh
 create_wine_prefix.sh
 creating_wine_shortcut.sh
 diagnostics.sh
