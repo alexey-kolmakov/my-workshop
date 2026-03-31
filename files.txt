@@ -1,4 +1,3 @@
-apt-update-upgrade.sh
 auditor_WineHQ.sh
 auto-shortcut.sh
 autolabel.sh
