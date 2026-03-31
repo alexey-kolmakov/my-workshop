@@ -1,4 +1,3 @@
-install-ms_office.sh
 install_program.sh
 iphone-mount.sh
 logout-dialog.sh
