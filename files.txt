@@ -1,2 +1,1 @@
-shortcut-builder.sh
 shortcut-maker.sh
