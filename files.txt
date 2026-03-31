@@ -1,4 +1,3 @@
-create-wine-shortcut.sh
 create_snapshot-2.sh
 create_snapshot.sh
 create_web_shortcut.sh
