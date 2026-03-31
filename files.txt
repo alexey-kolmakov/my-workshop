@@ -1,4 +1,3 @@
-makepdf.sh
 mount.sh
 myscript.sh
 n-make-executable.sh
