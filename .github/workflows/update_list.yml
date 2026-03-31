@@ -1,20 +1,30 @@
 name: Update Files List
 
-on: [push] # Будет запускаться при любом пуше (загрузке) файлов
+on:
+  push:
+    branches:
+      - main # Запускать, когда ты пушишь в основную ветку
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Даем роботу право записывать files.txt
     steps:
       - uses: actions/checkout@v3
 
       - name: Generate files.txt
         run: |
-          ls *.sh | grep -v "downloader.sh" > files.txt
+          # Теперь мы ищем внутри папки scripts!
+          # И записываем полные пути: scripts/твой_скрипт.sh
+          find scripts -name "*.sh" > files.txt
+          echo "Обновленный список:"
+          cat files.txt
 
       - name: Commit and push
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add files.txt
+          # Проверяем изменения, чтобы не падать на "пустом" коммите
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update files.txt" && git push)
