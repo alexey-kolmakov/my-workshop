@@ -1,46 +1,58 @@
 #!/bin/bash
+# INFO:[АРХІВ] скачує скрипти з GitHub
 
-# Файл со списком (должен быть в той же папке)
-LIST_FILE="files.txt"
 
-# Проверяем, существует ли файл списка
-if [[ ! -f "$LIST_FILE" ]]; then
-    zenity --error --text="Файл $LIST_FILE не найден!"
-    exit 1
+# --- НАСТРОЙКИ ---
+USER="alexey-kolmakov"
+REPO="my-workshop"
+BRANCH="main"
+RAW_URL="https://raw.githubusercontent.com/$USER/$REPO/$BRANCH/scripts"
+LIST_URL="https://raw.githubusercontent.com/$USER/$REPO/$BRANCH/files.txt"
+
+# 1. Скачиваем список файлов и показываем индикатор загрузки
+notify-send "Мастерская" "Синхронизация списка скриптов..." -i system-software-update
+curl -s "$LIST_URL" -o /tmp/gh_files.txt
+
+# 2. Подготовка данных для таблицы (имя | описание)
+# Мы создаем временный файл для хранения строк таблицы
+TABLE_DATA=()
+while IFS= read -r filename || [ -n "$filename" ]; do
+    [ -z "$filename" ] && continue
+    filename=$(echo "$filename" | tr -d '\r')
+    clean_name=$(basename "$filename")
+    
+    # Извлекаем описание (быстро, через curl первой строки)
+    desc=$(curl -s "$RAW_URL/$clean_name" | grep -m 1 "^# INFO:" | sed 's/^# INFO: //')
+    [ -z "$desc" ] && desc="Описание не найдено"
+    
+    # Добавляем в массив для Zenity
+    TABLE_DATA+=("$clean_name" "$desc")
+done < /tmp/gh_files.txt
+
+# 3. Окно выбора скрипта
+SELECTED=$(zenity --list \
+    --title="Моя мастерская: $REPO" \
+    --column="Файл" --column="Что делает этот скрипт?" \
+    --width=700 --height=400 \
+    "${TABLE_DATA[@]}")
+
+# Если нажата отмена - выходим
+if [ -z "$SELECTED" ]; then exit; fi
+
+# 4. Окно выбора папки для сохранения
+TARGET_DIR=$(zenity --file-selection --directory --title="Куда сохранить $SELECTED?")
+
+if [ -z "$TARGET_DIR" ]; then exit; fi
+
+# 5. Финальное скачивание
+curl -s -L "$RAW_URL/$SELECTED" -o "$TARGET_DIR/$SELECTED"
+
+if [ $? -eq 0 ]; then
+    chmod +x "$TARGET_DIR/$SELECTED"
+    zenity --info --text="Успешно!\nФайл: $SELECTED\nСохранен в: $TARGET_DIR" --title="Готово"
+else
+    zenity --error --text="Ошибка при загрузке файла." --title="Упс!"
 fi
 
-# 1. Формируем данные для Zenity. 
-# Мы берем из файла Имя и Описание, а Ссылку прячем.
-# Используем awk, чтобы превратить "имя|описание|ссылка" в формат для колонок Zenity.
-selected_item=$(awk -F'|' '{print $1 "\n" $2 "\n" $3}' "$LIST_FILE" | \
-    zenity --list \
-    --title="Мои Скрипты" \
-    --column="Скрипт" --column="Что делает" --column="URL (скрыто)" \
-    --hide-column=3 \
-    --print-column=3 \
-    --width=700 --height=500 \
-    --text="Выбери нужный инструмент:")
-
-# 2. Если пользователь нажал "Отмена" или закрыл окно
-if [[ -z "$selected_item" ]]; then
-    exit 0
-fi
-
-# 3. Извлекаем имя файла из выбранной строки (нужно для сохранения)
-# Так как мы вывели в переменную $selected_item только 3-ю колонку (--print-column=3),
-# нам нужно найти, какому имени файла она соответствует.
-file_to_save=$(grep "|$selected_item" "$LIST_FILE" | cut -d'|' -f1)
-
-# 4. Процесс загрузки
-(
-echo "10" ; sleep 1
-echo "# Начинаю загрузку $file_to_save..." ; sleep 1
-curl -L "$selected_item" -o "$file_to_save"
-echo "100" ; sleep 1
-echo "# Готово! Скрипт сохранен."
-) | zenity --progress --title="Загрузка" --auto-close --pulsate
-
-# 5. Делаем файл исполняемым
-chmod +x "$file_to_save"
-
-zenity --info --text="Скрипт <b>$file_to_save</b> успешно скачан и готов к запуску!" --timeout=3
+# Чистим временные файлы
+rm /tmp/gh_files.txt
