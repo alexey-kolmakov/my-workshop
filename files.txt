@@ -1,4 +1,3 @@
-main_menu.sh
 make-executable.sh
 make_shortcut.sh
 makepdf.sh
