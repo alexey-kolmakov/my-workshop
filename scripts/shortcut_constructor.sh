@@ -1,36 +1,55 @@
 #!/bin/bash
-# INFO:[СИСТЕМА] Конструктор ярликів із підтримкою drag’n’drop
+# INFO: [СИСТЕМА] Супер-конструктор ярликів MX Edition із підтримкою drag’n’drop
 
+# 🎯 Супер-Конструктор ярлыков MX Edition
 
-
-# Если путь передан как аргумент — используем его
 if [ -n "$1" ]; then
   target="$1"
 else
   read -e -p "📁 Путь к файлу или папке: " target
 fi
 
-# Название ярлыка — по имени файла/папки
+# Очистка пути от кавычек
+target="${target//\'/}"
+target="${target//\"/}"
+
+if [ ! -e "$target" ]; then
+  echo "❌ Указанный путь не существует: $target"
+  exit 1
+fi
+
+abs_target=$(realpath "$target")
 title=$(basename "$target")
+location="$(xdg-user-dir DESKTOP)"
 
-# Папка для сохранения
-location="$HOME/Робочий стіл"
-mkdir -p "$location"
+# 🖼️ 1. ВЫБОР ИКОНКИ
+icon_path=$(zenity --file-selection --title="Выберите иконку для $title" --filename=/usr/share/icons/ 2>/dev/null)
+if [ -z "$icon_path" ]; then
+  icon="application-x-executable"
+else
+  icon="$icon_path"
+fi
 
-# Иконка по умолчанию
-icon="text-x-generic"
+# 🖥️ 2. ВЫБОР РЕЖИМА ТЕРМИНАЛА
+if zenity --question --title="Настройка терминала" --text="Запускать '$title' в окне терминала?\n(Обычно нужно только для скриптов или консольных утилит)" --no-wrap 2>/dev/null; then
+  terminal_mode="true"
+else
+  terminal_mode="false"
+fi
 
-# Автоопределение команды запуска
-exec_cmd="xdg-open \"$target\""
-[[ "$target" == *.exe ]] && exec_cmd="wine \"$target\""
-[[ "$target" == *.sh ]] && exec_cmd="bash \"$target\""
-[[ -d "$target" ]] && exec_cmd="xdg-open \"$target\""
+# ⚙️ 3. ЛОГИКА КОМАНДЫ
+if [[ "$abs_target" == *.exe ]]; then
+  exec_cmd="wine \"$abs_target\""
+elif [[ "$abs_target" == *.sh ]]; then
+  exec_cmd="bash \"$abs_target\""
+else
+  exec_cmd="xdg-open \"$abs_target\""
+fi
 
-# Имя .desktop-файла
 desktop_file="${title// /_}.desktop"
 desktop_path="$location/$desktop_file"
 
-# Создание ярлыка
+# 📝 4. ЗАПИСЬ ФАЙЛА
 cat <<EOF > "$desktop_path"
 [Desktop Entry]
 Version=1.0
@@ -38,11 +57,11 @@ Type=Application
 Name=$title
 Exec=$exec_cmd
 Icon=$icon
-Terminal=false
-Categories=Utility;
+Terminal=$terminal_mode
+Path=$(dirname "$abs_target")
 StartupNotify=true
+Categories=Utility;
 EOF
 
 chmod +x "$desktop_path"
-
-echo -e "\n✅ Ярлык '$title' создан по пути: $desktop_path"
+echo -e "\n✅ Все готово! Ярлык создан и настроен."
