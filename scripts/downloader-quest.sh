@@ -1,4 +1,5 @@
 #!/bin/bash
+# INFO:[GitHub] с поиском скачивает скрипт из репозитория GitHub
 
 # --- НАСТРОЙКИ ---
 USER="alexey-kolmakov"
