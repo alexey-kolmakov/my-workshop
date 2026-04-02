@@ -48,6 +48,7 @@ scripts/copy_of_section_home.sh
 scripts/set-lang.sh
 scripts/install-ms_office.sh
 scripts/wifi_fix.sh
+scripts/downloader-quest.sh
 scripts/rename_interactive.sh
 scripts/create_snapshot.sh
 scripts/skript-sector-texts.sh
