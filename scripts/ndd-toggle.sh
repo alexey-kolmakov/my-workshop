@@ -26,11 +26,20 @@ DISK="/dev/$DISK"
 
 # Проверяем: смонтирован ли
 if mount | grep -q "$MP_NDD"; then
-    notify-send "NDD" "Отключение..."
 
-    # Закрываем окна файлового менеджера (важно!)
-    pkill -f "$MP_NDD"
-    pkill -f "$MP_ARCH"
+    # 🔍 Проверка: занят ли диск
+    BUSY=$(lsof +f -- "$MP_NDD" "$MP_ARCH" 2>/dev/null)
+
+    if [ -n "$BUSY" ]; then
+        notify-send "NDD ⚠️" "Диск занят! Закрой файлы"
+
+        # 🔊 звук предупреждения
+        paplay /usr/share/sounds/freedesktop/stereo/dialog-warning.oga &
+
+        exit 1
+    fi
+
+    notify-send "NDD" "Отключение..."
 
     # Размонтирование
     udisksctl unmount -b "$DEV_NDD"
@@ -38,6 +47,9 @@ if mount | grep -q "$MP_NDD"; then
 
     # Отключение питания
     udisksctl power-off -b "$DISK"
+
+    # 🔊 звук успеха
+    paplay /usr/share/sounds/freedesktop/stereo/device-remove.oga &
 
     notify-send "NDD" "Диск можно извлекать"
     exit 0
