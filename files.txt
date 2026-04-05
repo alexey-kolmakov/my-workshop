@@ -1,6 +1,7 @@
 scripts/ndd-manager.sh
 scripts/create_snapshot-2.sh
 scripts/wine-printer-check_external.sh
+scripts/Shortcut_Creator.sh
 scripts/make_shortcut.sh
 scripts/winebackup.sh
 scripts/install_program.sh
