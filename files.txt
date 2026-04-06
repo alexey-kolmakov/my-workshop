@@ -51,6 +51,7 @@ scripts/install-ms_office.sh
 scripts/wifi_fix.sh
 scripts/downloader-quest.sh
 scripts/rename_interactive.sh
+scripts/rename-menu.sh
 scripts/create_snapshot.sh
 scripts/skript-sector-texts.sh
 scripts/smart_download.sh
