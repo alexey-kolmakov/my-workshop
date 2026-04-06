@@ -33,6 +33,7 @@ scripts/upload.sh
 scripts/system-checkup-plus.sh
 scripts/text-selektor.sh
 scripts/shortcut_constructor.sh
+scripts/Determining_disk_mounts.sh
 scripts/Shortcut_Wizard.sh
 scripts/doc_sorter.sh
 scripts/touchpad-watcher.sh
