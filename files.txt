@@ -82,6 +82,7 @@ scripts/xpdf_copy.sh
 scripts/autolabel.sh
 scripts/puts_info.sh
 scripts/wine-font-gui.sh
+scripts/linux-help.sh
 scripts/wine-manager.sh
 scripts/recovery_sorter_menu.sh
 scripts/translate_interface.sh
