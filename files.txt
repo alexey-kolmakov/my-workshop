@@ -31,6 +31,7 @@ scripts/recover_sort_menu.sh
 scripts/wine_fonts_fix.sh
 scripts/linux-help.sh
 scripts/rename_docx_by_title.sh
+scripts/touchpad_toggle.sh
 scripts/clean_empty_desktop_files.sh
 scripts/set-lang.sh
 scripts/translate_interface.sh
