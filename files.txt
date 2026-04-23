@@ -36,6 +36,7 @@ scripts/clean_empty_desktop_files.sh
 scripts/set-lang.sh
 scripts/translate_interface.sh
 scripts/create_snapshot.sh
+scripts/backup_to_cloud.sh
 scripts/wifi_fix.sh
 scripts/autolabel.sh
 scripts/wine-master.sh
