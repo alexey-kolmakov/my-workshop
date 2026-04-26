@@ -63,6 +63,7 @@ scripts/disk_ritual.sh
 scripts/system-checkup-plus.sh
 scripts/script_cataloger.sh
 scripts/diagnostics.sh
+scripts/warehouseua_files_fm.sh
 scripts/install_program.sh
 scripts/downloader.sh
 scripts/touchpad-watcher.sh
