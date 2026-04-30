@@ -3,11 +3,11 @@
 
 
 # ЧТО бэкапим (проверь путь к своей папке!)
-SOURCE="путь к копируемой папке"
+SOURCE="/home/minok/My_warehouse"
 
 # КУДА бэкапим (filesfm — это имя твоего конфига)
 # Мы создадим там папку "MyArchive"
-DEST="filesfm:MyArchive"
+DEST="filesfm:warehouse"
 
 echo "Сверяю файлы... Это может занять время, если файлов много."
 
@@ -16,4 +16,4 @@ echo "Сверяю файлы... Это может занять время, ес
 rclone copy "$SOURCE" "$DEST" --progress
 #rclone sync "$SOURCE" "$DEST" --progress
 
-echo "Синхронизация завершена!"/путь к копируемой папке
+echo "Синхронизация завершена!"/home/minok/My_warehouse
