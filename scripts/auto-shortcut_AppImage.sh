@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # INFO: [СИСТЕМА] Универсальный конструктор ярлыков MiniOS Edition
-# Поддержка drag’n’drop, автопоиск иконок, выбор категории, создание ярлыка в меню
+# Поддержка: drag’n’drop, AppImage, автопоиск иконок, категории, меню XFCE
+
 
 # 1. Получение цели
 if [ -n "$1" ]; then
@@ -22,30 +23,47 @@ fi
 abs_target=$(realpath "$target")
 title=$(basename "$abs_target")
 menu_dir="$HOME/.local/share/applications"
+icon_dir="$HOME/.local/share/icons"
 
 mkdir -p "$menu_dir"
-# 2. Автопоиск иконки
+mkdir -p "$icon_dir"
+
+# 2. Определение MIME-типа
 mime_type=$(xdg-mime query filetype "$abs_target")
+
+# 3. Автопоиск иконки (для обычных файлов)
 icon_guess=$(grep -Rsl "$mime_type" /usr/share/icons/hicolor/*/mimetypes 2>/dev/null | head -n 1)
 
-if [ -n "$icon_guess" ]; then
-  # копируем системную иконку в локальную тему
-  mkdir -p "$HOME/.local/share/icons"
-  cp "$icon_guess" "$HOME/.local/share/icons/"
-  icon="$HOME/.local/share/icons/$(basename "$icon_guess")"
+# 4. Обработка AppImage
+if [[ "$abs_target" == *.AppImage ]]; then
+  chmod +x "$abs_target"
+
+  # Извлечение иконки
+  tmpdir=$(mktemp -d)
+  "$abs_target" --appimage-extract "*.png" &>/dev/null
+
+  extracted_icon=$(find squashfs-root -name "*.png" | head -n 1)
+
+  if [ -n "$extracted_icon" ]; then
+    cp "$extracted_icon" "$icon_dir/"
+    icon="$icon_dir/$(basename "$extracted_icon")"
+  else
+    icon="application-x-executable"
+  fi
+
+  rm -rf squashfs-root "$tmpdir"
+
 else
-  icon="application-x-executable"
-fi
-if [ -z "$icon_path" ]; then
-  icon="application-x-executable"
-else
-  mkdir -p "$HOME/.local/share/icons"
-  cp "$icon_path" "$HOME/.local/share/icons/"
-  icon="$HOME/.local/share/icons/$(basename "$icon_path")"
+  # Если не AppImage — используем найденную иконку
+  if [ -n "$icon_guess" ]; then
+    cp "$icon_guess" "$icon_dir/"
+    icon="$icon_dir/$(basename "$icon_guess")"
+  else
+    icon="application-x-executable"
+  fi
 fi
 
-
-# 3. Выбор категории
+# 5. Выбор категории
 category=$(zenity --list \
   --title="Категория ярлыка" \
   --text="Выберите категорию для '$title'" \
@@ -57,23 +75,25 @@ if [ -z "$category" ]; then
   category="Utility"
 fi
 
-# 4. Терминал
+# 6. Терминал
 if zenity --question --title="Терминал" --text="Запускать '$title' в терминале?" --no-wrap 2>/dev/null; then
   terminal_mode="true"
 else
   terminal_mode="false"
 fi
 
-# 5. Логика Exec
+# 7. Логика Exec
 if [[ "$abs_target" == *.exe ]]; then
   exec_cmd="wine $abs_target"
 elif [[ "$abs_target" == *.sh ]]; then
   exec_cmd="bash $abs_target"
+elif [[ "$abs_target" == *.AppImage ]]; then
+  exec_cmd="$abs_target"
 else
   exec_cmd="xdg-open $abs_target"
 fi
 
-# 6. Создание .desktop
+# 8. Создание .desktop
 desktop_file="${title// /_}.desktop"
 desktop_path="$menu_dir/$desktop_file"
 
@@ -87,6 +107,7 @@ Icon=$icon
 Terminal=$terminal_mode
 StartupNotify=true
 Categories=$category;
+Path=$(dirname "$abs_target")
 EOF
 
 chmod +x "$desktop_path"
