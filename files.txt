@@ -45,6 +45,7 @@ scripts/timeshift_assistant.sh
 scripts/Determining_disk_mounts.sh
 scripts/make-executable.sh
 scripts/safe-eject-interactive.sh
+scripts/optimize-mx-usb.sh
 scripts/disk_ritual.sh
 scripts/setup_links.sh
 scripts/script_manager_menu.sh
