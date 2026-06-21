@@ -47,6 +47,7 @@ scripts/recovery_menu.sh
 scripts/creating_wine_shortcut.sh
 scripts/site_diagnose.sh
 scripts/wine-font-gui.sh
+scripts/universal_shortcut.sh
 scripts/cleaning_junk_.desktop.sh
 scripts/s-wine-master.sh
 scripts/linux-help.sh
