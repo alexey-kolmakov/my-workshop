@@ -88,6 +88,7 @@ scripts/ocr_pdf_thunar.sh
 scripts/text-selektor.sh
 scripts/script_safety_menu.sh
 scripts/hash.sh
+scripts/portable-launch.sh
 scripts/apt-update-upgrade.sh
 scripts/safe-eject-interactive.sh
 scripts/iphone-mount.sh
