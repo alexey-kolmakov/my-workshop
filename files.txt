@@ -86,6 +86,7 @@ scripts/doc_sorter.sh
 scripts/Shortcut_recovery_script.sh
 scripts/copy_of_section_home.sh
 scripts/install-ms_office.sh
+scripts/run_menu_in_terminal.sh
 scripts/ocr_pdf_thunar.sh
 scripts/text-selektor.sh
 scripts/script_safety_menu.sh
