@@ -68,6 +68,7 @@ scripts/script_cataloger.sh
 scripts/partition_menu.sh
 scripts/winebackup.sh
 scripts/fix-permissions.sh
+scripts/run_menu_gui.sh
 scripts/cataloger.sh
 scripts/translate_interface.sh
 scripts/set-lang.sh
