@@ -44,6 +44,7 @@ scripts/makepdf.sh
 scripts/shortcut-maker.sh
 scripts/autostart-manager.sh
 scripts/recovery_menu.sh
+scripts/rtl8822ce-optimize.sh
 scripts/creating_wine_shortcut.sh
 scripts/site_diagnose.sh
 scripts/wine-font-gui.sh
