@@ -67,6 +67,7 @@ scripts/script_cataloger.sh
 scripts/partition_menu.sh
 scripts/winebackup.sh
 scripts/fix-permissions.sh
+scripts/cataloger.sh
 scripts/translate_interface.sh
 scripts/set-lang.sh
 scripts/shortcut-builder.sh
