@@ -41,6 +41,7 @@ scripts/rename-menu.sh
 scripts/downloader-quest.sh
 scripts/xpdf_copy.sh
 scripts/makepdf.sh
+scripts/setup.sh
 scripts/shortcut-maker.sh
 scripts/autostart-manager.sh
 scripts/recovery_menu.sh
