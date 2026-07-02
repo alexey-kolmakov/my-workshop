@@ -1,67 +1,98 @@
 #!/bin/bash
-# INFO: [СИСТЕМА] Wi-Fi підключення з zenity
+# INFO: [СИСТЕМА] Налаштовує та здійснює підключення Wi-Fi
 
 
-# Wi-Fi подключение с zenity: прогресс + лог в $HOME + честная проверка
+sudo nmcli device wifi connect "Vokamlok-5" password "..."
 
-#LOGFILE="$HOME/wifi-connect.log"
-#> "$LOGFILE"
+APPDIR="$(dirname "$(readlink -f "$0")")/../.."
 
-# Проверка root
-if [[ $EUID -ne 0 ]]; then
-    zenity --error --text="❌ Запусти скрипт через sudo."
-    exit 1
-fi
+# Определяем интерфейс Wi-Fi через NetworkManager
+IFACE=$(nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi"{print $1}' | head -n 1)
 
-# Автоопределение интерфейса (берём первый wl*)
-IFACE=$(ip link | awk -F: '/wl/{print $2; exit}' | tr -d ' ')
 if [[ -z "$IFACE" ]]; then
-    echo "❌ Не найден Wi-Fi интерфейс" >> "$LOGFILE"
-    zenity --text-info --title="Wi-Fi лог" --filename="$LOGFILE"
+    notify-send "Wi‑Fi" "❌ Интерфейс Wi‑Fi не найден"
+    zenity --error --text="Wi-Fi интерфейс не найден!"
     exit 1
 fi
 
-# Ввод SSID
-SSID=$(zenity --entry --title="Wi-Fi" --text="Введите имя сети (SSID):")
-[[ -z "$SSID" ]] && echo "❌ Имя сети не указано" >> "$LOGFILE" && zenity --text-info --title="Wi-Fi лог" --filename="$LOGFILE" && exit 1
+# Выбор сети
+SSID=$(nmcli -t -f SSID dev wifi | grep -v '^$' | sort -u | \
+    zenity --list --title="Выбор сети" --column="SSID")
 
-# Ввод пароля
-PASSWORD=$(zenity --entry --hide-text --title="Wi-Fi" --text="Введите пароль для $SSID:")
-[[ -z "$PASSWORD" ]] && echo "❌ Пароль не указан" >> "$LOGFILE" && zenity --text-info --title="Wi-Fi лог" --filename="$LOGFILE" && exit 1
-
-# Запускаем лог-окно параллельно
-tail -f "$LOGFILE" | zenity --text-info --title="Wi-Fi лог" --width=600 --height=400 &
-
-(
-echo "10"; echo "# Останавливаю старые процессы..."
-echo "Останавливаю старые процессы..." >> "$LOGFILE"
-killall wpa_supplicant dhclient 2>>"$LOGFILE"
-
-echo "30"; echo "# Удаляю старый конфиг..."
-rm -f "$HOME/wpa.conf" 2>>"$LOGFILE"
-
-echo "50"; echo "# Настраиваю wpa_supplicant..."
-wpa_passphrase "$SSID" "$PASSWORD" > "$HOME/wpa.conf" 2>>"$LOGFILE"
-wpa_supplicant -B -i "$IFACE" -c "$HOME/wpa.conf" >> "$LOGFILE" 2>&1
-
-echo "70"; echo "# Сброс IP..."
-dhclient -r "$IFACE" >> "$LOGFILE" 2>&1
-
-echo "80"; echo "# Получаю новый IP..."
-dhclient "$IFACE" >> "$LOGFILE" 2>&1
-
-echo "90"; echo "# Проверяю интернет..."
-# Проверка маршрута
-if ! ip route | grep -q '^default'; then
-    echo "❌ Нет маршрута по умолчанию — интернет недоступен." >> "$LOGFILE"
-else
-    # Проверка DNS
-    if ping -c 2 google.com >> "$LOGFILE" 2>&1; then
-        echo "✅ Интернет работает!" >> "$LOGFILE"
-    else
-        echo "❌ Нет доступа к интернету (DNS/маршрут)." >> "$LOGFILE"
-    fi
+if [[ -z "$SSID" ]]; then
+    notify-send "Wi‑Fi" "❌ Сеть не выбрана"
+    zenity --error --text="Сеть не выбрана."
+    exit 1
 fi
 
-echo "100"; echo "# Завершено."
-) | zenity --progress --title="Wi-Fi подключение" --percentage=0 --auto-close
+# Пароль
+PASSWORD=$(zenity --password --title="Пароль для $SSID")
+
+if [[ -z "$PASSWORD" ]]; then
+    notify-send "Wi‑Fi" "❌ Пароль не введён"
+    zenity --error --text="Пароль не введён."
+    exit 1
+fi
+# -----------------------------
+# Выбор лучшей точки по скорости канала (RATE) и сигналу (RSSI)
+# -----------------------------
+BEST_ENTRY=$(nmcli -t -f SSID,BSSID,FREQ,SIGNAL,RATE dev wifi | \
+    awk -F: -v target="$SSID" '$1==target {print $0}' | \
+    sort -t: -k5 -nr -k4 -nr | head -n 1)
+
+if [[ -z "$BEST_ENTRY" ]]; then
+    notify-send "Wi‑Fi" "❌ Не удалось найти сеть $SSID"
+    zenity --error --text="Сеть $SSID не найдена."
+    exit 1
+fi
+
+BEST_BSSID=$(echo "$BEST_ENTRY" | awk -F: '{print $2}')
+BEST_FREQ=$(echo "$BEST_ENTRY" | awk -F: '{print $3}')
+BEST_SIGNAL=$(echo "$BEST_ENTRY" | awk -F: '{print $4}')
+BEST_RATE=$(echo "$BEST_ENTRY" | awk -F: '{print $5}')
+
+notify-send "Wi‑Fi" "🚀 Выбрана самая быстрая точка:\nBSSID: $BEST_BSSID\nЧастота: $BEST_FREQ MHz\nСигнал: $BEST_SIGNAL%\nСкорость: $BEST_RATE Мбит/с"
+echo "Лучшая точка: $BEST_BSSID ($BEST_FREQ MHz, $BEST_SIGNAL%, $BEST_RATE Мбит/с)" >> "$LOGFILE"
+
+# -----------------------------
+# Уведомления после подключения
+# -----------------------------
+if ping -c 1 google.com >/dev/null 2>&1; then
+    notify-send "Wi‑Fi" "✅ Подключено к $SSID"
+else
+    notify-send "Wi‑Fi" "❌ Нет доступа к интернету"
+fi
+
+zenity --text-info --title="Wi-Fi лог" --filename="$LOGFILE"
+
+# -----------------------------
+# Монитор потери сети + авто‑переподключение
+# -----------------------------
+(
+    LAST_STATE="online"
+
+    while true; do
+        if ping -c 1 google.com >/dev/null 2>&1; then
+            if [[ "$LAST_STATE" == "offline" ]]; then
+                notify-send "Wi‑Fi" "🔄 Интернет восстановлен"
+                LAST_STATE="online"
+            fi
+        else
+            if [[ "$LAST_STATE" == "online" ]]; then
+                notify-send "Wi‑Fi" "❌ Интернет пропал"
+                LAST_STATE="offline"
+            fi
+
+            # Авто‑переподключение
+            nmcli device wifi connect "$SSID" password "$PASSWORD" bssid "$BEST_BSSID"
+
+            # Проверка после попытки переподключения
+            if ping -c 1 google.com >/dev/null 2>&1; then
+                notify-send "Wi‑Fi" "🔄 Интернет восстановлен"
+                LAST_STATE="online"
+            fi
+        fi
+
+        sleep 5
+    done
+) &
