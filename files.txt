@@ -92,6 +92,7 @@ scripts/recover_sort_menu.sh
 scripts/runwine.sh
 scripts/set-lang.sh
 scripts/myscript.sh
+scripts/diskinfo.sh
 scripts/Shortcut_Wizard.sh
 scripts/wifi-connect.sh
 scripts/Shortcut_Creator.sh
